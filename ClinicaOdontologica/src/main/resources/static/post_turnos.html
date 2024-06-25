@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="night">
+
+<head>
+    <title>Ingresar Turnos</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="js/post_turnos.js"></script>
+</head>
+
+<body>
+    <nav class="mb-1 h-20" id="navbar-container">
+    </nav>
+
+    <h1 class="text-5xl font-bold text-center">Ingresar Turno</h1>
+
+    <!-- Formulario para agregar turnos -->
+    <main class="mt-8">
+        <div class="max-w-2xl mx-auto rounded-md overflow-hidden">
+            <form id="addTurnoForm" class=" p-2 flex gap-6 flex-col">
+                <label class="input input-bordered flex items-center gap-2">
+                    ID Paciente:
+                    <input id="turnoPacienteId" type="number" class="grow" placeholder="24" required />
+                </label>
+                <label class="input input-bordered flex items-center gap-2">
+                    ID Odontologo:
+                    <input id="turnoOdontologoId" type="number" class="grow" placeholder="3" required />
+                </label>
+                <label class="input input-bordered flex items-center gap-2">
+                    <input type="date" id="turnoFecha" class="grow" placeholder="Fecha" required />
+                </label>
+                <button type="submit" class="btn btn-primary max-w-sm sm:px-24 mx-auto">Agregar Turno</button>
+            </form>
+        </div>
+
+    </main>
+    <script type="text/javascript" src="js/base.js"></script>
+</body>
+</html>

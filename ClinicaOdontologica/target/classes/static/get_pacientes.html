@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="night">
+
+<head>
+    <title>Listado Pacientes</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="/js/get_pacientes.js"></script>
+</head>
+
+<body>
+    <nav class="mb-1 h-20" id="navbar-container">
+    </nav>
+
+    <div class="divider"></div>
+
+    <h1 class="text-5xl font-bold text-center">Listado Pacientes</h1>
+
+    <main class="mt-8 justify-center">
+        <div class="max-w-5xl mx-auto rounded-md overflow-hidden">
+            <table id="pacientesTable" class="table table-zebra">
+                <!-- head -->
+                <thead class="bg-base-300">
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Cédula</th>
+                        <th class="max-w-32">Domicilio</th>
+                        <th>Email</th>
+                        <th>Editar/Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="pacientesTableBody">
+
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <dialog id="deleteModal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Confirmar Eliminación</h3>
+            <p class="py-4">¿Estás seguro de que deseas eliminar este Paciente?</p>
+            <div class="modal-action">
+                <button id="cancelDeleteButton" class="btn btn-success">Cancelar</button>
+                <button id="confirmDeleteButton" class="btn btn-error">Eliminar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="updateModal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Actualizar</h3>
+
+            <form id="updatePacienteForm" class="p-2 flex gap-3 flex-col">
+                <input id="pacienteId" type="number" class="hidden" />
+                <input id="pacienteFechaIngreso" type="date" class="hidden" />
+
+                <div class="flex flex-col gap-2 sm:flex-row">
+                    <label class="input input-bordered flex items-center gap-2 sm:w-1/2">
+                        Nombre:
+                        <input id="pacienteNombre" type="text" placeholder="Juan Carlos" required />
+                    </label>
+
+                    <label class="input input-bordered flex items-center gap-2 sm:w-1/2">
+                        Apellido:
+                        <input class="w-32" id="pacienteApellido" type="text" placeholder="Bodoque" required />
+                    </label>
+                </div>
+
+                <div class="flex flex-col gap-2 sm:flex-row">
+                    <label class="input input-bordered flex items-center gap-2 sm:w-1/2">
+                        Cédula:
+                        <input id="pacienteCedula" type="text" placeholder="098742546" required />
+                    </label>
+
+                    <label class="input input-bordered flex items-center gap-2 sm:w-1/2">
+                        Email:
+                        <input class="w-36" id="pacienteEmail" type="text" placeholder="juanCb@juan.es" required />
+                    </label>
+                </div>
+
+                Domicilio:
+                <div class="flex flex-col gap-2 sm:flex-row">
+                    <label class="input input-bordered flex items-center gap-2 sm:w-1/2">
+                        Calle:
+                        <input id="pacienteDomicilioCalle" type="text" placeholder="Av.Street" required />
+                    </label>
+                    <label class="input input-bordered flex items-center gap-2 sm:w-1/2">
+                        Numero:
+                        <input class="w-32" id="pacienteDomicilioNumero" type="number" placeholder="134" required />
+                    </label>
+                </div>
+                <div class="flex flex-col gap-2 sm:flex-row">
+                    <label class="input input-bordered flex items-center gap-2 sm:w-1/2">
+                        Localidad:
+                        <input id="pacienteDomicilioLocalidad" type="text" placeholder="Michigan" required />
+                    </label>
+                    <label class="input input-bordered flex items-center gap-2 sm:w-1/2">
+                        Provincia:
+                        <input class="w-32" id="pacienteDomicilioProvincia" type="text" placeholder="Ohio" required />
+                    </label>
+                </div>
+                <div class="modal-action">
+                    <button type="button" id="updateCancelButton" class="btn btn-warning">Cancelar</button>
+                    <button vtype="submit" id="updateConfirmButton" class="btn btn-success">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <script type="text/javascript" src="js/base.js"></script>
+</body>
+
+</html>

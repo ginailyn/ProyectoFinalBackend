@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="night">
+
+<head>
+    <title>Listado Odontólogos</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="js/get_odontologos.js"></script>
+</head>
+
+<body>
+    <nav class="mb-1 h-20" id="navbar-container">
+    </nav>
+
+    <div class="divider"></div>
+
+    <h1 class="text-5xl font-bold text-center">Listado Odontologos</h1>
+
+    <main class="mt-8 justify-center">
+        <div class="max-w-2xl mx-auto rounded-md overflow-hidden">
+            <table id="odontologoTable" class="table table-zebra">
+                <!-- head -->
+                <thead class="bg-base-300">
+                    <tr>
+                        <th>ID</th>
+                        <th>Matricula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Editar/Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="odontologoTableBody">
+
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <dialog id="confirmDeleteModal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Confirmar Eliminación</h3>
+            <p class="py-4">¿Estás seguro de que deseas eliminar este odontólogo?</p>
+            <div class="modal-action">
+                <button id="cancelDeleteButton" class="btn btn-success">Cancelar</button>
+                <button id="confirmDeleteButton" class="btn btn-error">Eliminar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="updateModal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Actualizar</h3>
+
+            <form id="updateOdontologoForm" class="p-2 flex gap-3 flex-col">
+                <input id="odontologoId" type="number" class="hidden" />
+
+                <label class="input input-bordered flex items-center gap-2">
+                    Matrícula:
+                    <input id="odontologoMatricula" type="text" placeholder="0980007" required />
+                </label>
+            
+                <label class="input input-bordered flex items-center gap-2">
+                    Nombre:
+                    <input id="odontologoNombre" type="text" placeholder="Juanito" required />
+                </label>
+            
+                <label class="input input-bordered flex items-center gap-2">
+                    Apellido:
+                    <input id="odontologoApellido" type="text" placeholder="Maraña" required />
+                </label>
+
+                <div class="modal-action">
+                    <button type="button" id="updateCancelButton" class="btn btn-warning">Cancelar</button>
+                    <button type="submit" id="updateConfirmButton" class="btn btn-success">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <script type="text/javascript" src="js/base.js"></script>
+</body>
+
+</html>
