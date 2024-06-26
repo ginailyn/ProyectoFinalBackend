@@ -35,9 +35,11 @@ public class OdontologoController {
         return ResponseEntity.ok(nuevoOdontologo);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<String> actualizarOdontologo(@PathVariable Long id, @RequestBody Odontologo odontologo) {
+    @PutMapping
+    public ResponseEntity<String> actualizarOdontologo(@RequestBody Odontologo odontologo) {
         Optional<Odontologo> odontologoBuscado = odontologoService.buscarPorID(odontologo.getId());
+
+        //Optional<Odontologo> odontologoBuscado = odontologoService.buscarPorID(odontologo.getId());
         if (odontologoBuscado.isPresent()) {
             Odontologo odontologoActualizado = odontologoBuscado.get();
             odontologoActualizado.setNombre(odontologo.getNombre());

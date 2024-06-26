@@ -75,10 +75,10 @@ public class PacienteController {
     }
 
     // Método para actualizar un paciente existente
-    @PutMapping("/{id}")
-    public ResponseEntity<String> actualizarPaciente(@PathVariable Long id,@RequestBody Paciente paciente) {
+    @PutMapping
+    public ResponseEntity<String> actualizarPaciente(@RequestBody Paciente paciente) {
         // Llama al método del servicio para buscar un paciente por ID
-        Optional<Paciente> pacienteBuscado = pacienteService.buscarPorID(id);
+        Optional<Paciente> pacienteBuscado = pacienteService.buscarPorID(paciente.getId());
         // Si el paciente está presente, actualiza el paciente
         if (pacienteBuscado.isPresent()) {
             Paciente pacienteActualizado = pacienteBuscado.get();

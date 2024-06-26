@@ -58,6 +58,8 @@ public class TurnoController {
     @PutMapping
     public ResponseEntity<String> actualizarTurno(@RequestBody Turno turno) {
         Optional<Turno> turnoBuscado = turnoService.buscarPorID(turno.getId());
+
+        //Optional<Turno> turnoBuscado = turnoService.buscarPorID(turno.getId());
         if (turnoBuscado.isPresent()) {
             turnoService.actualizarTurno(turno);
             return ResponseEntity.ok("Turno actualizado con exito");

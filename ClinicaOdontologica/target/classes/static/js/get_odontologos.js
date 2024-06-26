@@ -123,7 +123,7 @@ window.addEventListener("load", function () {
 
   // Función para obtener los datos del paciente y mostrar el formulario de actualización
   window.findBy = function (id) {
-    const url = `/odontologos/${id}`;
+    const url = `/odontologos`;
     const settings = {
       method: "GET",
     };
@@ -143,7 +143,7 @@ window.addEventListener("load", function () {
       );
   };
 
-  // Función para actualizar el paciente
+  // Función para actualizar el Odontólogo
   function updateOdontologo () {
     const id = document.getElementById("odontologoId").value;
     const url = `/odontologos`;
