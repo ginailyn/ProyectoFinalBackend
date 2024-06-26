@@ -1,6 +1,7 @@
 package BackEndC3.ClinicaOdontologica.controller;
 
 import BackEndC3.ClinicaOdontologica.entity.Odontologo;
+import BackEndC3.ClinicaOdontologica.exception.ResourceNotFoundException;
 import BackEndC3.ClinicaOdontologica.service.OdontologoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,8 @@ public class OdontologoController {
 
     @GetMapping
     public ResponseEntity<List<Odontologo>> odontologoList() {
-        List<Odontologo> listaOdontogos = odontologoService.buscarOdontologos();
-        return ResponseEntity.ok(listaOdontogos);
+    //    List<Odontologo> listaOdontogos = odontologoService.buscarOdontologos();
+        return ResponseEntity.ok(odontologoService.buscarOdontologos());
     }
 
     @GetMapping("/{id}")
@@ -34,25 +35,31 @@ public class OdontologoController {
         return ResponseEntity.ok(nuevoOdontologo);
     }
 
-    @PutMapping
-    public ResponseEntity<String> actualizarOdontologo(@RequestBody Odontologo odontologo) {
-        Optional<Odontologo> odontologoId = odontologoService.buscarPorID(odontologo.getId());
-        if (odontologoId.isPresent()) {
-            odontologoService.actualizarOdontologo(odontologo);
-            return ResponseEntity.ok("Odontologo actualizado con exito");
+    @PutMapping("{id}")
+    public ResponseEntity<String> actualizarOdontologo(@PathVariable Long id, @RequestBody Odontologo odontologo) {
+        Optional<Odontologo> odontologoBuscado = odontologoService.buscarPorID(odontologo.getId());
+        if (odontologoBuscado.isPresent()) {
+            Odontologo odontologoActualizado = odontologoBuscado.get();
+            odontologoActualizado.setNombre(odontologo.getNombre());
+            odontologoActualizado.setApellido(odontologo.getApellido());
+            odontologoActualizado.setMatricula(odontologo.getMatricula());
+
+            odontologoService.actualizarOdontologo(odontologoActualizado);
+            return ResponseEntity.ok("El Odontólogo se ha actualizado con éxito");
         } else {
-            return ResponseEntity.badRequest().body("Odontologo no encontrado");
+            return ResponseEntity.badRequest().body("Odontólogo no encontrado");
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> odontologoAEliminar(@PathVariable Long id) {
+    public ResponseEntity<String> odontologoAEliminar(@PathVariable Long id) throws ResourceNotFoundException {
         Optional<Odontologo> odontologoConsultado = odontologoService.buscarPorID(id);
         if (odontologoConsultado.isPresent()) {
             odontologoService.odontologoAEliminar(id);
-            return ResponseEntity.ok("Odontologo eliminado exitosamente");
+            return ResponseEntity.ok("Odontólogo eliminado exitosamente");
         } else {
-            return ResponseEntity.notFound().build();
+           // return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("Turno no encontrado");
         }
     }
 }

@@ -1,6 +1,9 @@
 package BackEndC3.ClinicaOdontologica.controller;
 
 import BackEndC3.ClinicaOdontologica.entity.Paciente;
+import BackEndC3.ClinicaOdontologica.entity.Turno;
+import BackEndC3.ClinicaOdontologica.exception.BadRequestException;
+import BackEndC3.ClinicaOdontologica.exception.ResourceNotFoundException;
 import BackEndC3.ClinicaOdontologica.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +31,7 @@ public class PacienteController {
     }
 
     // Método para buscar un paciente por su ID
-    @GetMapping("/{id}")
+   /* @GetMapping("/{id}")
     public ResponseEntity<Optional<Paciente>> buscarPorPaciente(@PathVariable Long id) {
         // Llama al método del servicio para buscar un paciente por ID
         Optional<Paciente> paciente = pacienteService.buscarPorID(id);
@@ -39,6 +42,11 @@ public class PacienteController {
             // Si el paciente no se encuentra, devuelve el estado 404 (Not Found)
             return ResponseEntity.notFound().build();
         }
+    } */
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Paciente>> buscarPorPaciente(@PathVariable Long id){
+        return ResponseEntity.ok(pacienteService.buscarPorID(id));
     }
 
     // Método para buscar un paciente por su email
@@ -57,23 +65,34 @@ public class PacienteController {
 
     // Método para guardar un nuevo paciente
     @PostMapping
-    public ResponseEntity<Paciente> guardarPaciente(@RequestBody Paciente paciente) {
+    public ResponseEntity<Paciente> guardarPaciente(@RequestBody Paciente paciente) throws BadRequestException {
         // Llama al método del servicio para guardar el paciente
-        Paciente nuevoPaciente = pacienteService.guardarPaciente(paciente);
+        //Paciente nuevoPaciente = pacienteService.guardarPaciente(paciente);
+
         // Devuelve el paciente guardado en la respuesta HTTP con estado 200 (OK)
-        return ResponseEntity.ok(nuevoPaciente);
+        return ResponseEntity.ok(pacienteService.guardarPaciente(paciente));
+
     }
 
     // Método para actualizar un paciente existente
-    @PutMapping
-    public ResponseEntity<String> actualizarPaciente(@RequestBody Paciente paciente) {
+    @PutMapping("/{id}")
+    public ResponseEntity<String> actualizarPaciente(@PathVariable Long id,@RequestBody Paciente paciente) {
         // Llama al método del servicio para buscar un paciente por ID
-        Optional<Paciente> pacienteBuscado = pacienteService.buscarPorID(paciente.getId());
+        Optional<Paciente> pacienteBuscado = pacienteService.buscarPorID(id);
         // Si el paciente está presente, actualiza el paciente
         if (pacienteBuscado.isPresent()) {
-            pacienteService.actualizarPaciente(paciente);
+            Paciente pacienteActualizado = pacienteBuscado.get();
+            pacienteActualizado.setNombre(paciente.getNombre());
+            pacienteActualizado.setApellido(paciente.getApellido());
+            pacienteActualizado.setCedula(paciente.getCedula());
+            pacienteActualizado.setFechaIngreso(paciente.getFechaIngreso());
+            pacienteActualizado.setDomicilio(paciente.getDomicilio());
+            pacienteActualizado.setEmail(paciente.getEmail());
+
+            pacienteService.actualizarPaciente(pacienteActualizado);
+
             // Devuelve un mensaje de éxito con estado 200 (OK)
-            return ResponseEntity.ok("Paciente actualizado con exito");
+            return ResponseEntity.ok("El Paciente se ha actualizado con éxito");
         } else {
             // Si el paciente no se encuentra, devuelve un mensaje de error con estado 400 (Bad Request)
             return ResponseEntity.badRequest().body("Paciente no encontrado");
@@ -82,7 +101,7 @@ public class PacienteController {
 
     // Método para eliminar un paciente por su ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> pacienteAEliminar(@PathVariable Long id) {
+    public ResponseEntity<String> pacienteAEliminar(@PathVariable Long id) throws ResourceNotFoundException {
         // Llama al método del servicio para buscar un paciente por ID
         Optional<Paciente> pacienteConsultado = pacienteService.buscarPorID(id);
         // Si el paciente está presente, elimina el paciente
@@ -92,7 +111,9 @@ public class PacienteController {
             return ResponseEntity.ok("Paciente eliminado exitosamente");
         } else {
             // Si el paciente no se encuentra, devuelve el estado 404 (Not Found)
-            return ResponseEntity.notFound().build();
+           // return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("Paciente no encontrado");
+
         }
     }
 }

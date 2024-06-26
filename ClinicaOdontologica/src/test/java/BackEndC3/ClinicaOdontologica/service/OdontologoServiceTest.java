@@ -22,40 +22,51 @@ public class OdontologoServiceTest {
     @Test
     @Order(1)
     public void crearOdontologo(){
-        Odontologo odontologo= new Odontologo(4L, "8888", "Mariana","Perez");
+        Odontologo odontologo= new Odontologo("8888", "Mariana","Perez");
         Odontologo odontologoGuardado= odontologoService.crearOdontologos(odontologo);
-        assertEquals(4L,odontologoGuardado.getId());
+        assertEquals(1L,odontologoGuardado.getId());
     }
 
     @Test
     @Order(2)
     public void buscarPorId(){
-        Long id= 4L;
+        Long id= 1L;
         Optional<Odontologo> odontologoBuscado = odontologoService.buscarPorID(id);
         assertNotNull(odontologoBuscado.get());
     }
 
+    /*@Test
+    @Order(3)
+    public void actualizarOdontologo(){
+        Long id= 1L;
+        Odontologo odontologo= new Odontologo(id,"4587","Ana","Gonzalez");
+        odontologoService.actualizarOdontologo(odontologo);
+        Optional<Odontologo> odontologoBuscado= odontologoService.buscarPorId(id);
+        assertEquals("Ana", odontologoBuscado.get().getNombre());
+    }*/
+
+
     @Test
     @Order(3)
     public void actualizarOdontologo(){
-        Long id= 4L;
-        Odontologo odontologo= new Odontologo(4L,"5444", "Susana","Jimenez");
+        Long id= 1L;
+        Odontologo odontologo= new Odontologo(id,"6767", "Ana","Gonzalez");
         odontologoService.actualizarOdontologo(odontologo);
         Optional<Odontologo> odontologoBuscado= odontologoService.buscarPorID(id);
-        assertEquals("Susana", odontologoBuscado.get().getNombre());
+        assertEquals("Ana", odontologoBuscado.get().getNombre());
     }
 
     @Test
     @Order(4)
     public void listarTodos(){
         List<Odontologo> listaOdontologos= odontologoService.buscarOdontologos();
-        assertEquals(4,listaOdontologos.size());
+        assertEquals(1,listaOdontologos.size());
     }
 
     @Test
     @Order(5)
     public void eliminarOdontologo(){
-        odontologoService.odontologoAEliminar(4L);
+        odontologoService.odontologoAEliminar(1L);
         Optional<Odontologo> odontologoEliminado= odontologoService.buscarPorID(4L);
         assertFalse(odontologoEliminado.isPresent());
     }

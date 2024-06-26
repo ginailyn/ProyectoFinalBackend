@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 import java.time.LocalDate;
 
@@ -34,6 +36,9 @@ public class TurnosIntegracionTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private  ObjectMapper objectMapper;
+
     private void cargarDatos(){
         Paciente paciente= pacienteService.guardarPaciente(new Paciente(1L,"Jorgito","pereyra","11111", LocalDate.of(2024,6,20),new Domicilio(1L,"calle falsa",123,"La Rioja","Argentina"),"jorge.pereyra@digitalhouse.com"));
         Odontologo odontologo= odontologoService.crearOdontologos(new Odontologo(1L,"44444","Gina","Arias"));
@@ -50,4 +55,26 @@ public class TurnosIntegracionTest {
         assertFalse(respuesta.getResponse().getContentAsString().isEmpty());
 
     }
+    @Test
+    public void RegistrarTurnosTest() throws Exception {
+
+        Paciente paciente= new Paciente("Jorgito","pereyra","11111", LocalDate.of(2024,6,20),new Domicilio("calle falsa",123,"La Rioja","Argentina"),"jorge.pereyra@digitalhouse.com");
+        Paciente pacienteGuardado= pacienteService.guardarPaciente(paciente);
+        Odontologo odontologo= new Odontologo("8888", "Mariana","Perez");
+        Odontologo odontologoGuardado = odontologoService.crearOdontologos(odontologo);
+        Turno turno = new Turno(1L, pacienteGuardado, odontologoGuardado, LocalDate.of(2024,6,20));
+
+        String turnoJson = objectMapper.writeValueAsString(turno);
+
+        MvcResult respuesta = mockMvc.perform(MockMvcRequestBuilders.post("/turnos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(turnoJson)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        assertFalse(respuesta.getResponse().getContentAsString().isEmpty());
+    }
+
+
 }

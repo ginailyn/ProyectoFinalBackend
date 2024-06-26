@@ -14,6 +14,9 @@ public class OdontologoService {
     @Autowired
     private OdontologoRepository odontologoRepository;
 
+    public List<Odontologo> listarTodos(){
+        return odontologoRepository.findAll();
+    }
     public List<Odontologo> buscarOdontologos() {
         return odontologoRepository.findAll();
     }
@@ -27,6 +30,7 @@ public class OdontologoService {
     }
 
     public Odontologo actualizarOdontologo(Odontologo odontologo) {
+
         return odontologoRepository.save(odontologo);
     }
 

@@ -1,5 +1,6 @@
 package BackEndC3.ClinicaOdontologica;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import BackEndC3.ClinicaOdontologica.entity.Odontologo;
 import BackEndC3.ClinicaOdontologica.service.OdontologoService;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 public class OdontologoIntegracionTest {
@@ -23,6 +25,8 @@ public class OdontologoIntegracionTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private  ObjectMapper objectMapper;
     private void cargarDatos(){
         Odontologo odontologo= odontologoService.crearOdontologos(new Odontologo(1L, "55555","Gina","Arias"));
     }
@@ -36,4 +40,20 @@ public class OdontologoIntegracionTest {
                 .andReturn();
         assertFalse(respuesta.getResponse().getContentAsString().isEmpty());
     }
+    @Test
+     public void RegistrarOdontologosTest() throws Exception {
+        Odontologo nuevoOdontologo = new Odontologo("MP11", "Juan", "Perez");
+
+        String odontologoJson = objectMapper.writeValueAsString(nuevoOdontologo);
+
+        MvcResult respuesta = mockMvc.perform(MockMvcRequestBuilders.post("/odontologos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(odontologoJson)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        assertFalse(respuesta.getResponse().getContentAsString().isEmpty());
+    }
+
 }

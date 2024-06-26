@@ -3,6 +3,8 @@ package BackEndC3.ClinicaOdontologica.controller;
 import BackEndC3.ClinicaOdontologica.entity.Odontologo;
 import BackEndC3.ClinicaOdontologica.entity.Paciente;
 import BackEndC3.ClinicaOdontologica.entity.Turno;
+import BackEndC3.ClinicaOdontologica.exception.BadRequestException;
+import BackEndC3.ClinicaOdontologica.exception.ResourceNotFoundException;
 import BackEndC3.ClinicaOdontologica.service.OdontologoService;
 import BackEndC3.ClinicaOdontologica.service.PacienteService;
 import BackEndC3.ClinicaOdontologica.service.TurnoService;
@@ -41,14 +43,15 @@ public class TurnoController {
     }
 
     @PostMapping
-    public ResponseEntity<Turno> guardarTurno(@RequestBody Turno turno) {
+    public ResponseEntity<Turno> guardarTurno(@RequestBody Turno turno) throws BadRequestException {
         Optional<Paciente> pacienteBuscado = pacienteService.buscarPorID(turno.getPaciente().getId());
         Optional<Odontologo> odontologoBuscado = odontologoService.buscarPorID(turno.getOdontologo().getId());
         if (pacienteBuscado.isPresent() && odontologoBuscado.isPresent()) {
             Turno nuevoTurno = turnoService.guardarTurno(turno);
             return ResponseEntity.ok(nuevoTurno);
         } else {
-            return ResponseEntity.badRequest().body(null);
+            //return ResponseEntity.badRequest().body(null);
+            throw new BadRequestException("Paciente u Odontólogo no existe");
         }
     }
 
@@ -64,13 +67,14 @@ public class TurnoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> turnoAEliminar(@PathVariable Long id) {
+    public ResponseEntity<String> turnoAEliminar(@PathVariable Long id) throws ResourceNotFoundException {
         Optional<Turno> turnoConsultado = turnoService.buscarPorID(id);
         if (turnoConsultado.isPresent()) {
             turnoService.turnoAEliminar(id);
             return ResponseEntity.ok("Turno eliminado exitosamente");
         } else {
-            return ResponseEntity.notFound().build();
+           // return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("Turno no encontrado");
         }
     }
 }
